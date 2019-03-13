@@ -1,9 +1,8 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+
 const bcrypt = require('../helpers/bcrypt')
+const mongoose = require('mongoose')
 
-mongoose.connect('mongodb://localhost/mini-wp', { useNewUrlParser: true }) //promsie
-
+const Schema = mongoose.Schema
 
 let userSchema = new Schema({
     username: String,

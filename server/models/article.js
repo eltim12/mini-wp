@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
-const Schema = mongoose.Schema
 
-mongoose.connect('mongodb://localhost/mini-wp', { useNewUrlParser: true })
+
+const Schema = mongoose.Schema
 
 let articleSchema = new Schema ({
     title: String,

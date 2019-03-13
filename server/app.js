@@ -4,6 +4,11 @@ const cors = require('cors')
 const app = express()
 const port = 3000
 
+const mongoose = require('mongoose')
+
+
+mongoose.connect('mongodb+srv://mini-wp:mini-wp@sandbox-hhbxz.mongodb.net/test?retryWrites=true', { useNewUrlParser: true })
+
 app.use(express.json())
 
 app.use(bodyParser.urlencoded({ extended: false }))
