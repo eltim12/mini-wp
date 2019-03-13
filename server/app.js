@@ -1,13 +1,15 @@
+const env = require('dotenv')
+env.config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 
 const mongoose = require('mongoose')
 
 
-mongoose.connect('mongodb+srv://mini-wp:mini-wp@sandbox-hhbxz.mongodb.net/test?retryWrites=true', { useNewUrlParser: true })
+mongoose.connect(`mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@sandbox-hhbxz.mongodb.net/test?retryWrites=true`, { useNewUrlParser: true })
 
 app.use(express.json())
 
