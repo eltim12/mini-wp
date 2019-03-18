@@ -1,7 +1,5 @@
 # mini-wp
 
-# Fancy Todo
-
 ------
 
 ## API Documentation:
