@@ -1,341 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.8/dist/vue.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <link rel="stylesheet" href="./style.css">
-    <title>Mini Word Press</title>
-
-</head>
-
-<body>
-    <div id="main" class="main">
-
-        <!-- ----------------------------NAV BAR----------------------------------- -->
-
-        <nav id="navbar" class="fixed">
-            <div class="nav-wrapper grey darken-4 fixed">
-                <a href="#" id="logo" class="brand-logo center" @click="buttonShowArticle()"><img
-                        src="./img/icon-left-font-monochrome-white.png" width="200px"></a>
-                <ul id="nav-mobile" class="hide-on-med-and-down">
-
-                    <div class="container">
-                        <div id="user-greeting" v-if="showUserGreeting">
-                            <li id="account" class="left">
-                                <a href="#" @click="buttonShowPersonalArticle()">
-                                    <span>
-                                        <i class="material-icons">account_circle</i>
-                                    </span>
-                                </a>
-                            </li>
-                            hey John!
-                        </div>
-
-                        <!-- <div id="loginButton"> -->
-                        <li>
-                            <a class="waves-effect waves-hard btn white grey-text text-darken-4"
-                                @click="buttonShowLoginForm()">login</a>
-                        </li>
-                        <!-- </div> -->
-
-                        <li id="search" class="right">
-                            <a href="#">
-                                <i class="material-icons">search</i>
-                            </a>
-                        </li>
-
-                        <li id="write" class="right">
-                            <a href="#" @click="buttonShowAddArticle()">
-                                <i class="material-icons">create</i>
-                            </a>
-                        </li>
-                    </div>
-
-                </ul>
-            </div>
-        </nav>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.8/dist/vue.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script src="./js/components/vueWysiwyg.js"></script>
 
 
-        <!-- ----------------------------LOGIN FORM----------------------------------- -->
+        <link rel="stylesheet" href="./vueWysiwyg.css" />
+        <link rel="stylesheet" href="./style.css" />
+        <title>Mini Word Press</title>
+    </head>
 
-        <div id="login-form" v-if="showLoginForm" class="container">
-            <div class="row">
-                <div id="form-login" class="container fixed col s4 offset-s4">
-                    <div class="row">
-                        <div class="col m10 offset-m1 s12">
-                            <h3 id="add-article-header" class="center-align">Login</h3>
-                            <div class="row">
-                                <form class="col s12" @submit.prevent="login()">
-                                    <div class="row">
-                                        <div class="input-field col s8 offset-s2">
-                                            <input id="username-input" type="text" class="validate" autocomplete="off" v-model="username" name="username">
-                                            <label for="title">Username</label> 
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="input-field col s8 offset-s2">
-                                            <input id="password-input" type="text" class="validate" autocomplete="off" v-model="password" name="password">
-                                            <label for="title">Password</label>
-                                        </div>
-                                    </div>
+    <body>
+        <div id="app" class="app">
+            <!-- ----------------------------NAV BAR----------------------------------- -->
+            <navbar-template 
+                v-if="showNavbar" 
+                v-bind:is-login="isLogin" 
+                @show-login-form="position = 'loginForm'" 
+                @back-to-home="showAllArticle"
+                @show-my-articles="showMyArticle"
+                @logout="logout" 
+                @show-add-article-form="position = 'addArticleForm'"    
+            >
+            </navbar-template>
 
-                                    <div class="row">
-                                        <div class="input-field col s7 offset-s4">
-                                            <button class="btn waves-effect waves-hard grey darken-2" type="submit"
-                                                name="action">Login
-                                            </button>
-                                            <button id="register-button"
-                                                class="btn waves-effect waves-hard grey darken-2" type="submit"
-                                                name="action" @click="buttonShowRegisterForm()">Register
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- ----------------------------LOGIN FORM----------------------------------- -->
+            <login-template 
+                v-if="position === 'loginForm'" 
+                @submit-login="login" 
+                @register-form="position = 'registerForm'"
+            > 
+            </login-template>
+
+            <!-- --------------------REGISTER FORM----------------------------------- -->
+            <register-template 
+                v-if="position === 'registerForm'" 
+                @submit-register="register"
+            > 
+            </register-template>
+
+            <!-- ---------------UPDATE USER FORM-------------------------- -->
+            <update-user-template
+                v-if="position === 'updateUserForm'"
+                v-bind:user-info="editUserData"
+                @submit-new-user-info="updateUserToServer"
+            >
+            </update-user-template>
+
+            <!-- -------------ADD ARTICLE FORM---------------- -->
+            <add-article-form 
+                v-if="position === 'addArticleForm'"
+                v-bind:input="articleInput"
+                @submit="submitNewPost()"
+            > 
+            </add-article-form>
+
+            <!-- -------------------UPDATE ARTICLE FORM----------------------------- -->
+            <update-article-form 
+                v-if="position === 'updateArticleForm'" 
+                v-bind:edit-article-data="editArticleData" 
+                @submit-update-article-form="updateArticleToServer"
+                @change-file-format="fileHandler"
+            >
+            </update-article-form>
+
+            <!-- -----------------------SHOW ALL ARTICLE------------------------ -->
+            <list-all-article 
+                v-if="position === 'listAllArticle'" 
+                v-bind:articles="articles" 
+                v-bind:current-user-id="currentUserId" 
+                @update-article="updateArticle"
+                @delete-article="deleteArticleToServer"
+                > 
+            </list-all-article>
+
+            <!-- --------------------SHOW PERSONAL ARTICLE---------------------- -->
+            <user-article
+                v-if="position === 'list-my-articles'"
+                v-bind:articles="articles" 
+                v-bind:current-user-id= "currentUserId" 
+                @update-my-article="updateMyArticle"
+                @delete-my-article="deleteMyArticleToServer"
+                @update-my-profile="updateUserForm"
+            >
+            </user-article>
+
+            <!-- -------------------UPDATE MY ARTICLE FORM------------------------ -->
+            <update-article-form 
+                v-if="position === 'updateMyArticleForm'" 
+                v-bind:edit-article-data="editMyArticleData" @submit-update-article-form="updateMyArticleToServer"
+            >
+            </update-article-form>
+
         </div>
 
-        <!-- ----------------------------REGISTER FORM----------------------------------- -->
+        
 
-        <div id="register-form" v-if="showRegisterForm" class="container">
-            <div class="row">
-                <div id="form-register" class="container fixed col s4 offset-s4">
-                    <div class="row">
-                        <div class="col m10 offset-m1 s12">
-                            <h3 id="add-article-header" class="center-align">Register</h3>
-                            <div class="row">
-                                <form class="col s12">
-                                    <div class="row">
-                                        <div class="input-field col s8 offset-s2">
-                                            <input id="username-input" type="text" class="validate" autocomplete="off">
-                                            <label for="title">Username</label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="input-field col s8 offset-s2">
-                                            <input id="email-input" type="text" class="validate" autocomplete="off">
-                                            <label for="title">Email</label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="input-field col s8 offset-s2">
-                                            <input id="password-input" type="text" class="validate" autocomplete="off">
-                                            <label for="title">Password</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-                                        <div class="input-field col s7 offset-s4">
-                                            <button id="register-button"
-                                                class="btn waves-effect waves-hard grey darken-2" type="submit"
-                                                name="action">Register
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- ──────────────────────────NAV BAR─────────────────────────────────────── -->
+        <script src="./js/components/navbar.js"></script>
+        <!-- ──────────────────────────LOGIN─────────────────────────────────────── -->
+        <script src="./js/components/login.js"></script>
+        <!-- ──────────────────────────REGISTER─────────────────────────────────────── -->
+        <script src="./js/components/register.js"></script>
+        <!-- ──────────────────────────UPDATE USER─────────────────────────────────────── -->
+        <script src="./js/components/updateUser.js"></script>
+        <!-- ──────────────────────────ADD ARTICLE────────────────────────────────── -->
+        <script src="./js/components/addArticle.js"></script>
+        <!-- ──────────────────────────UPDATE ARTICLE────────────────────────────────── -->
+        <script src="./js/components/updateArticle.js"></script>
+        <!-- ──────────────────────────UPDATE MY ARTICLE────────────────────────── -->
+        <script src="./js/components/updateMyArticle.js"></script>
+        <!-- ──────────────────────────LIST ARTICLE────────────────────────────────── -->
+        <script src="./js/components/listArticle.js"></script>
+        <!-- ──────────────────────────USER ARTICLE────────────────────────────────── -->
+        <script src="./js/components/userArticle.js"></script>
+        <!-- ─────────────────────────MAIN SCRIPT──────────────────────────────────────── -->
+        <script src="./script.js"></script>
 
 
-        <!-- ----------------------------ADD ARTICLE FORM----------------------------------- -->
+        <!-- ─────────────────────────FACEBOOK──────────────────────────────────────── -->
+        
+    </body>
 
-        <div id="add-article" v-if="showAddArticle" class="container">
-            <div class="row">
-                <div id="form-add" class="container fixed col s6 offset-s3">
-                    <div class="row">
-                        <div class="col m10 offset-m1 s12">
-                            <h3 id="add-article-header" class="center-align">Add Article</h3>
-                            <div class="row">
-                                <form class="col s12">
-                                    <div class="row">
-                                        <div class="input-field col s8 offset-s2">
-                                            <input id="title" type="text" class="validate" autocomplete="off">
-                                            <label for="title">Title</label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="input-field col s8 offset-s2">
-                                            <textarea id="textarea" class="materialize-textarea"
-                                                autocomplete="off"></textarea>
-                                            <label for="textarea1">Tell us about your ideas!</label>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="input-field col s8 offset-s2">
-                                            <button class="btn waves-effect waves-hard grey darken-2" type="submit"
-                                                name="action">Submit
-                                                <i class="material-icons right">send</i>
-                                            </button>
-                                        </div>
-
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- ----------------------------SHOW ALL ARTICLE----------------------------------- -->
-
-        <div id="show-article" v-if="showArticle" class="container">
-
-            <div class="row">
-                <div class="col s6 offset-s3">
-                    <div id="card-content" class="card grey darken-4">
-                        <div class="card-content white-text" v-for="item in articles">
-                            <span class="card-title">{{item.title}}</span>
-                            <div class="divider yellow accent-3"></div>
-                            <div class="section">
-                                <p>{{item.content}}</p>
-                            </div>
-                            <div class="section">
-
-                                <p>{{item.created_at}}</p>
-                                <p class="">{{item.userId.username}}</p>
-                            </div>
-                        </div>
-                        <div class="card-action">
-                            <div class="section">
-                                <a href="#" class="cyan-text text-accent-2" @click=updateArticle()>Update</a>
-                                <a href="#" class="purple-text text-accent-2" @click=deleteArticle()>Delete</a>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-            </div>
-        </div>
-
-
-        <!-- ----------------------------SHOW PERSONAL ARTICLE----------------------------------- -->
-
-        <div id="show-person-article" v-if="showPersonalArticle" class="container">
-
-            <div class="row">
-                <div class="col s6 offset-s3">
-                    <div id="card-content" class="card grey darken-4">
-                        <div class="card-content white-text">
-                            <span class="card-title">Article Title</span>
-                            <div class="divider yellow accent-3"></div>
-                            <div class="section">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vehicula risus id
-                                    condimentum finibus. Duis sit amet mi vestibulum, sollicitudin ligula at, rutrum
-                                    ligula. Aliquam mattis nunc ligula, et vehicula erat condimentum in. Vestibulum id
-                                    convallis massa. Mauris dictum rhoncus bibendum. Nunc ante augue, finibus vel
-                                    porttitor suscipit, porttitor ut lectus. Nullam fermentum facilisis ullamcorper.
-                                    Proin mattis tortor eros, in viverra elit suscipit non. Integer magna mauris,
-                                    blandit sit amet quam tempor, dapibus molestie arcu. Donec vestibulum, lorem ac
-                                    dignissim viverra, elit nulla hendrerit ante, sed semper enim erat ut lacus. Aenean
-                                    nec neque diam. Cras imperdiet eu tortor non hendrerit. Fusce non velit a tellus
-                                    tincidunt rhoncus. Nullam in nisl erat. Vestibulum sodales nibh at consequat luctus.
-                                    Nam feugiat lacinia lacus, et egestas est iaculis at.</p>
-                            </div>
-                        </div>
-                        <div class="card-action">
-                            <a href="#" class="cyan-text text-accent-2">Update</a>
-                            <a href="#" class="purple-text text-accent-2">Delete</a>
-                        </div>
-                    </div>
-
-                    <div id="card-content" class="card grey darken-4">
-                        <div class="card-content white-text">
-                            <span class="card-title">Article Title</span>
-                            <div class="divider yellow accent-3"></div>
-                            <div class="section">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vehicula risus id
-                                    condimentum finibus. Duis sit amet mi vestibulum, sollicitudin ligula at, rutrum
-                                    ligula. Aliquam mattis nunc ligula, et vehicula erat condimentum in. Vestibulum id
-                                    convallis massa. Mauris dictum rhoncus bibendum. Nunc ante augue, finibus vel
-                                    porttitor suscipit, porttitor ut lectus. Nullam fermentum facilisis ullamcorper.
-                                    Proin mattis tortor eros, in viverra elit suscipit non. Integer magna mauris,
-                                    blandit sit amet quam tempor, dapibus molestie arcu. Donec vestibulum, lorem ac
-                                    dignissim viverra, elit nulla hendrerit ante, sed semper enim erat ut lacus. Aenean
-                                    nec neque diam. Cras imperdiet eu tortor non hendrerit. Fusce non velit a tellus
-                                    tincidunt rhoncus. Nullam in nisl erat. Vestibulum sodales nibh at consequat luctus.
-                                    Nam feugiat lacinia lacus, et egestas est iaculis at.</p>
-                            </div>
-                        </div>
-                        <div class="card-action">
-                            <a href="#" class="cyan-text text-accent-2">Update</a>
-                            <a href="#" class="purple-text text-accent-2">Delete</a>
-                        </div>
-                    </div>
-
-                    <div id="card-content" class="card grey darken-4">
-                        <div class="card-content white-text">
-                            <span class="card-title">Article Title</span>
-                            <div class="divider yellow accent-3"></div>
-                            <div class="section">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vehicula risus id
-                                    condimentum finibus. Duis sit amet mi vestibulum, sollicitudin ligula at, rutrum
-                                    ligula. Aliquam mattis nunc ligula, et vehicula erat condimentum in. Vestibulum id
-                                    convallis massa. Mauris dictum rhoncus bibendum. Nunc ante augue, finibus vel
-                                    porttitor suscipit, porttitor ut lectus. Nullam fermentum facilisis ullamcorper.
-                                    Proin mattis tortor eros, in viverra elit suscipit non. Integer magna mauris,
-                                    blandit sit amet quam tempor, dapibus molestie arcu. Donec vestibulum, lorem ac
-                                    dignissim viverra, elit nulla hendrerit ante, sed semper enim erat ut lacus. Aenean
-                                    nec neque diam. Cras imperdiet eu tortor non hendrerit. Fusce non velit a tellus
-                                    tincidunt rhoncus. Nullam in nisl erat. Vestibulum sodales nibh at consequat luctus.
-                                    Nam feugiat lacinia lacus, et egestas est iaculis at.</p>
-                            </div>
-                        </div>
-                        <div class="card-action">
-                            <a href="#" class="cyan-text text-accent-2">Update</a>
-                            <a href="#" class="purple-text text-accent-2">Delete</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col offset-s11">
-                    <div id="person-profile" class="card grey darken-4">
-                        <div class="card-image waves-effect waves-block waves-light">
-                            <img class="activator" src="https://ya-webdesign.com/images/profile-avatar-png-15.png">
-                        </div>
-                        <div class="card-content">
-                            <span class="card-title activator white-text text-darken-4">John Doe<i
-                                    class="material-icons right">more_vert</i></span>
-                            <p><a href="#">edit profile</a></p>
-                        </div>
-                        <div class="card-reveal">
-                            <span class="card-title grey-text text-darken-4">Card Title<i
-                                    class="material-icons right">close</i></span>
-                            <p>Here is some more information about this product that is only revealed once clicked on.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div id="footer">
+        <p id="footer-text">
+            © 2019 Adoratorio _ P.IVA 03610560983 _ Privacy and Cookie
+        </p>
     </div>
-
-    <script src="./script.js"></script>
-
-</body>
-
-<div id="footer">
-    <p id="footer-text">© 2019 Adoratorio _ P.IVA 03610560983 _ Privacy and Cookie</p>
-</div>
-
-
 </html>

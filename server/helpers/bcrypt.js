@@ -1,8 +1,11 @@
-var bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs')
+const env = require('dotenv')
+env.config()
 
 module.exports = {
     encrypt: function (plainPassword) {
-        var salt = bcrypt.genSaltSync(10)
+        let saltRound = Number(process.env.BCRYPT_SALT_ROUNDS)
+        var salt = bcrypt.genSaltSync(saltRound)
         var hash = bcrypt.hashSync(plainPassword, salt)
         return hash
     },

@@ -1,6 +1,6 @@
+const express = require('express')
 const env = require('dotenv')
 env.config()
-const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express()
@@ -9,7 +9,9 @@ const port = process.env.PORT || 3000
 const mongoose = require('mongoose')
 
 
-mongoose.connect(`mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@sandbox-hhbxz.mongodb.net/test?retryWrites=true`, { useNewUrlParser: true })
+// mongoose.connect(`mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@sandbox-hhbxz.mongodb.net/test?retryWrites=true`, { useNewUrlParser: true })
+
+mongoose.connect('mongodb://localhost:27017/mini-wp', { useNewUrlParser:true })
 
 app.use(express.json())
 
@@ -25,4 +27,4 @@ app.use("/articles", articleRoutes)
 
 
 
-app.listen(port, () => console.log("listening on port" + port))  
+app.listen(port, () => console.log("listening on port" + port))

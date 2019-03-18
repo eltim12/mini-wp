@@ -11,6 +11,7 @@ let userSchema = new Schema({
 })
 
 userSchema.pre('save', function(next) {
+    console.log('hooks is here ===========')
     this.password = bcrypt.encrypt(this.password)
     next()
 })

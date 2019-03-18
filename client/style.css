@@ -18,10 +18,10 @@ body {
     flex-direction: column;
 }
 
-#main {
+#app {
     min-height: 748px;
 }
-main {
+app {
     flex: 1 0 auto;
 }
 
@@ -34,18 +34,21 @@ main {
     /* margin-bottom: 1cm; */
 }
 
-#nama{
+#nama {
     margin-bottom: 1cm;
 }
 
+#add-article {
+}
+
 #add-article-header {
-    color:white;
+    color: white;
 }
 
 #form-add {
-    border: 1px #18ffff solid;
-    margin-top: 5cm;
-
+    /* border: 1px #18ffff solid; */
+    margin-top: 5.5rem;
+    margin-left: 7.5rem;
     background-color: #212121;
 }
 
@@ -59,20 +62,19 @@ main {
     background-color: #212121;
 }
 
+/* ─────[ADD ARTICLE FORM]───────────────────────────────────────────────────────────────── */
 
 #title:focus {
     border-bottom: 1px solid #ffea00;
     box-shadow: 0 1px 0 0 #ffea00;
 }
 
-/* #ffea00  */
-
 #title:focus + label {
-    color:#ffea00;    
+    color: #ffea00;
 }
 
 #title {
-    color:#e040fb;
+    color: #e040fb;
 }
 
 #textarea:focus {
@@ -85,7 +87,45 @@ main {
 }
 
 #textarea {
-    color:#e040fb;
+    color: #e040fb;
+}
+
+/* ─────[LOGIN FORM]───────────────────────────────────────────────────────────────── */
+#username-input:focus {
+    border-bottom: 1px solid #18ffff;
+    box-shadow: 0 1px 0 0 #18ffff;
+}
+
+#username-input:focus + label {
+    color: #18ffff;
+}
+
+#username-input {
+    color: white;
+    position: initial;
+
+}
+
+#password-input:focus {
+    border-bottom: 1px solid #18ffff;
+    box-shadow: 0 1px 0 0 #18ffff;
+}
+
+#password-input:focus + label {
+    color: #18ffff;
+}
+
+#password-input {
+    color: white;
+}
+
+/* ─────[UPDATE FORM]───────────────────────────────────────────────────────────────── */
+#update-form {
+    margin-top: 8rem;
+}
+
+#email-input {
+    color: white;
 }
 
 #footer {
@@ -103,27 +143,38 @@ main {
 }
 
 #show-article {
-    z-index:-2;
+    z-index: -2;
     margin-top: 50px;
     margin-left: 280px;
 }
 
 #show-person-article {
-    z-index:-2;
+    z-index: -2;
     margin-top: 50px;
     margin-left: 280px;
 }
 
 #card-content {
-    margin:1cm;
+    margin: 1cm;
 }
 
 #person-profile {
     position: fixed;
     top: 0;
-    margin-top: 470px;
-    margin-left: 117px;
-    width: 190px;
-    /* height: 400px; */
-    /* size: 200px; */
+    margin-top: 24rem;
+    margin-left: 63rem;
+    width: 200px;
 }
+
+#update-lable {
+    color: rgb(157, 156, 157);
+}
+
+#update-input {
+    position: initial;
+}
+
+/* #my-signin2 {
+    position: fixed;
+    top:3rem;
+} */

@@ -7,6 +7,9 @@ router.get('/', userController.findAll)
 //get one user data find by user id
 router.get('/find', userController.findOne)
 
+//update user
+router.put('/edit', userController.editProfile)
+
 //register new user
 router.post('/register', userController.register)
 

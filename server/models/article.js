@@ -6,6 +6,7 @@ const Schema = mongoose.Schema
 let articleSchema = new Schema ({
     title: String,
     content: String,
+    url: String,
     created_at: String,
     userId: {
         type: mongoose.Schema.ObjectId,
